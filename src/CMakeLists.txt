@@ -47,6 +47,9 @@ target_link_libraries(
     ${PROJECT_NAME} PRIVATE
     easy_translate::easy_translate
     keyboard_tools::keyboard_tools
+    shell32
+    advapi32
+    comctl32
 )
 
 ###############
@@ -59,13 +62,11 @@ if(MSVC)
 endif()
 
 # 指定为 GUI 应用程序。
-if(WIN32)
-    option(KEEP_TERMINAL "Keep terminal window" OFF)
-    set_target_properties(
-        ${PROJECT_NAME} PROPERTIES
-        WIN32_EXECUTABLE $<NOT:$<BOOL:${KEEP_TERMINAL}>>
-    )
-endif()
+option(KEEP_TERMINAL "Keep terminal window" OFF)
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES
+    WIN32_EXECUTABLE $<NOT:$<BOOL:${KEEP_TERMINAL}>>
+)
 
 # 程序退出后自动更新语言文件的翻译ID列表。（开发时使用，用于提取翻译ID）
 option(UPDATE_TRANSLATIONS_FILES "Update the translations files. Only for dev dump Text ID list." OFF)
@@ -76,6 +77,20 @@ target_compile_definitions(
 
 # 配置应用资源/属性。
 set(APP_ICON ${APP_ICON_DIR}/app.ico)
+
+set(APP_MANIFEST ${CMAKE_CURRENT_BINARY_DIR}/app.manifest)
+configure_file(
+    ${CMAKE_TEMPLATES_DIR}/app.manifest.in
+    ${APP_MANIFEST}
+    @ONLY
+)
+
+# 是否将 app.manifest 文件加入到资源文件中。
+option(EMBED_APP_MANIFEST "Add the app.manifest file to the rc file." ON)
+if(EMBED_APP_MANIFEST)
+    # MSVC 默认会自动嵌入一个 manifest，禁用以避免与资源文件中的 RT_MANIFEST 冲突。
+    target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MANIFEST:NO>)
+endif()
 
 set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
 configure_file(
@@ -95,15 +110,3 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
     ${LANGUAGES_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>/languages
 )
-
-# Qt 部署（需要保证 *deployqt 可见）
-option(DEPLOYQT_AFTER_BUILD "Execute *deployqt program to install Qt dependencies after build." OFF)
-if(DEPLOYQT_AFTER_BUILD)
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND windeployqt
-        $<$<CONFIG:Debug>:--debug>$<$<NOT:$<CONFIG:Debug>>:--release>
-        $<TARGET_FILE:${PROJECT_NAME}>
-        $<$<PLATFORM_ID:Darwin>:-codesign=->
-    )
-endif()

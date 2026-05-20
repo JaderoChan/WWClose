@@ -1,1 +1,14 @@
-{}
+{
+    "App.Name": "WWClose",
+    "App.Description": "Close the focused window using Win+W, just like Cmd+W on MacOS.",
+    "Tray.AutoStart": "Auto Start",
+    "Tray.Language": "Language",
+    "Tray.Language.EN": "English",
+    "Tray.Language.ZH": "中文",
+    "Tray.About": "About",
+    "Tray.Exit": "Exit",
+    "About.Title": "About WWClose",
+    "About.Version": "Version",
+    "About.Author": "Author",
+    "About.Github": "GitHub URL"
+}
