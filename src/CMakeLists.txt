@@ -45,7 +45,6 @@ target_include_directories(
 # 链接依赖库。
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Widgets
     easy_translate::easy_translate
     keyboard_tools::keyboard_tools
 )
