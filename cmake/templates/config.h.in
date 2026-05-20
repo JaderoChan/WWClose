@@ -1,0 +1,24 @@
+#pragma once
+
+#include <qapplication.h>
+#include <qstring.h>
+
+#define APP_ORGANIZATION        "@APP_ORGANIZATION@"
+#define APP_ORGANIZATION_DOMAIN "@APP_ORGANIZATION_DOMAIN@"
+#define APP_TITLE               "@APP_TITLE@"
+#define APP_VERSION_MAJOR       @APP_VERSION_MAJOR@
+#define APP_VERSION_MINOR       @APP_VERSION_MINOR@
+#define APP_VERSION_PATCH       @APP_VERSION_PATCH@
+#define APP_VERSION             "@APP_VERSION@"
+#define APP_AUTHOR              "@APP_AUTHOR@"
+#define APP_CONTACT_EMAIL       "@APP_CONTACT_EMAIL@"
+#define APP_COPYRIGHT_TEXT      "@APP_COPYRIGHT_TEXT@"
+
+#define APP_LANG_FILEPATH       "languages/languages.json"
+
+#define APP_DIRPATH QApplication::applicationDirPath()
+#ifdef Q_OS_MAC
+    #define APP_RESOURCES_DIRPATH    (APP_DIRPATH + "/../Resources")
+#else
+    #define APP_RESOURCES_DIRPATH    APP_DIRPATH
+#endif // Q_OS_MAC
