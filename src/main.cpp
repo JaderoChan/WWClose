@@ -397,7 +397,7 @@ static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 static bool keyEventHandler(kbt::KeyEvent e)
 {
     // Layout: [BeforeKey, Win, Ctrl, Shift, Alt, AfterKey].
-    static uint32_t pressedKeys[6] = {};
+    static uint32_t pressedKeys[6] = {0};
 
     kbt::Key key = kbt::keyFromNativeKey(e.nativeKey);
 
@@ -440,9 +440,9 @@ static bool keyEventHandler(kbt::KeyEvent e)
     }
 
     // Win+W: trigger close and suppress the system hotkey.
-    if (pressedKeys[1] == kbt::Key_Meta && pressedKeys[2] == 0 &&
-        pressedKeys[3] == 0             && pressedKeys[4] == 0 &&
-        pressedKeys[5] == kbt::Key_W)
+    if (pressedKeys[1] == kbt::Key_Meta && pressedKeys[5] == kbt::Key_W &&
+        pressedKeys[0] == 0             && pressedKeys[2] == 0 &&
+        pressedKeys[3] == 0             && pressedKeys[4] == 0)
     {
         HWND target = getFocusedWindow();
         if (gHwnd)
