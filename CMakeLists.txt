@@ -23,6 +23,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(easy_translate)
 
+# 配置 Keyboard Tools 库
+FetchContent_Declare(
+    keyboard_tools
+    SOURCE_DIR ${3RDPARTY_DIR}/keyboard_tools
+)
+FetchContent_MakeAvailable(keyboard_tools)
+
 ###############
 # 设置程序信息 #
 ###############
