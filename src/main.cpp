@@ -500,14 +500,16 @@ static int run(HINSTANCE hInst)
     return static_cast<int>(msg.wParam);
 }
 
-// Windows-subsystem entry point (KEEP_TERMINAL OFF).
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
-{
-    return run(hInst);
-}
-
+#ifdef KEEP_TERMINAL
 // Console-subsystem entry point (KEEP_TERMINAL ON, development).
 int main()
 {
     return run(GetModuleHandleA(nullptr));
 }
+#else
+// Windows-subsystem entry point (KEEP_TERMINAL OFF).
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
+{
+    return run(hInst);
+}
+#endif
