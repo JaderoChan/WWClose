@@ -2,7 +2,7 @@
 
 [**[简体中文](README.md)** | **English**]
 
-![Version](https://img.shields.io/badge/version-1.0.1-blue)
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows-0078D6?logo=windows&logoColor=white)
 ![Language](https://img.shields.io/badge/language-C%2B%2B17-00599C?logo=cplusplus&logoColor=white)
 ![CMake](https://img.shields.io/badge/CMake-3.26+-064F8C?logo=cmake&logoColor=white)
