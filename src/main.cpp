@@ -399,6 +399,18 @@ static bool keyEventHandler(kbt::KeyEvent e)
     // Layout: [BeforeKey, Win, Ctrl, Shift, Alt, AfterKey].
     static uint32_t pressedKeys[6] = {0};
 
+    // Resync modifier states against the real keyboard state.
+    // Elevated windows (e.g. Task Manager) can swallow key-release events,
+    // leaving stale modifier flags that cause false triggers on the next keypress.
+    if (!(GetAsyncKeyState(VK_LWIN) & 0x8000) && !(GetAsyncKeyState(VK_RWIN) & 0x8000))
+        pressedKeys[1] = 0;
+    if (!(GetAsyncKeyState(VK_LCONTROL) & 0x8000) && !(GetAsyncKeyState(VK_RCONTROL) & 0x8000))
+        pressedKeys[2] = 0;
+    if (!(GetAsyncKeyState(VK_LSHIFT) & 0x8000) && !(GetAsyncKeyState(VK_RSHIFT) & 0x8000))
+        pressedKeys[3] = 0;
+    if (!(GetAsyncKeyState(VK_LMENU) & 0x8000) && !(GetAsyncKeyState(VK_RMENU) & 0x8000))
+        pressedKeys[4] = 0;
+
     kbt::Key key = kbt::keyFromNativeKey(e.nativeKey);
 
     switch (key)
