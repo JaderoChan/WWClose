@@ -10,7 +10,7 @@
 
 A **Windows** system-tray application that replaces the default `Win + W` shortcut (which opens the Widgets panel) with **closing the currently focused window** — identical in behaviour to `Alt + F4`.
 
-The goal is to provide a more ergonomic alternative to `Alt + F4`. Because the two keys are far apart, that shortcut is awkward to trigger one-handed. WWClose lets you close windows on **Windows** just as conveniently as `⌘ W` on **MacOS**.
+The goal is to provide a more ergonomic alternative to `Alt + F4`. Because the two keys are far apart, that shortcut is awkward to trigger one-handed. WWClose lets you close windows on **Windows** just as conveniently as `⌘ Q` on **MacOS**.
 
 ## Features
 

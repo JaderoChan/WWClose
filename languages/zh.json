@@ -1,6 +1,6 @@
 {
     "App.Name": "WWClose",
-    "App.Description": "使用 Win+W 热键关闭当前活动窗口，如同 MacOS 上的 Cmd+W 一样方便。",
+    "App.Description": "使用 Win+W 热键关闭当前活动窗口，如同 MacOS 上的 Cmd+Q 一样方便。",
     "Tray.AutoStart": "开机自启动",
     "Tray.Language": "语言",
     "Tray.Language.EN": "English",
