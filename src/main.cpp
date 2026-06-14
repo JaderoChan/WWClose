@@ -415,19 +415,19 @@ static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 static bool keyEventHandler(kbt::KeyEvent e)
 {
     // Layout: [BeforeKey, Win, Ctrl, Shift, Alt, AfterKey].
-    static uint32_t pressedKeys[6] = {0};
+    static kbt::Key pressedKeys[6] = {kbt::Key_None};
 
     // Resync modifier states against the real keyboard state.
     // Elevated windows (e.g. Task Manager) can swallow key-release events,
     // leaving stale modifier flags that cause false triggers on the next keypress.
     if (!(GetAsyncKeyState(VK_LWIN) & 0x8000) && !(GetAsyncKeyState(VK_RWIN) & 0x8000))
-        pressedKeys[1] = 0;
+        pressedKeys[1] = kbt::Key_None;
     if (!(GetAsyncKeyState(VK_LCONTROL) & 0x8000) && !(GetAsyncKeyState(VK_RCONTROL) & 0x8000))
-        pressedKeys[2] = 0;
+        pressedKeys[2] = kbt::Key_None;
     if (!(GetAsyncKeyState(VK_LSHIFT) & 0x8000) && !(GetAsyncKeyState(VK_RSHIFT) & 0x8000))
-        pressedKeys[3] = 0;
+        pressedKeys[3] = kbt::Key_None;
     if (!(GetAsyncKeyState(VK_LMENU) & 0x8000) && !(GetAsyncKeyState(VK_RMENU) & 0x8000))
-        pressedKeys[4] = 0;
+        pressedKeys[4] = kbt::Key_None;
 
     kbt::Key key = kbt::keyFromNativeKey(e.nativeKey);
 
@@ -436,32 +436,32 @@ static bool keyEventHandler(kbt::KeyEvent e)
         case kbt::Key_Meta:
         case kbt::Key_Meta_Left:
         case kbt::Key_Meta_Right:
-            pressedKeys[1] = (e.type == kbt::KET_PRESSED ? kbt::Key_Meta : 0);
+            pressedKeys[1] = (e.type == kbt::KET_PRESSED ? kbt::Key_Meta : kbt::Key_None);
             break;
         case kbt::Key_Ctrl:
         case kbt::Key_Ctrl_Left:
         case kbt::Key_Ctrl_Right:
-            pressedKeys[2] = (e.type == kbt::KET_PRESSED ? kbt::Key_Ctrl : 0);
+            pressedKeys[2] = (e.type == kbt::KET_PRESSED ? kbt::Key_Ctrl : kbt::Key_None);
             break;
         case kbt::Key_Shift:
         case kbt::Key_Shift_Left:
         case kbt::Key_Shift_Right:
-            pressedKeys[3] = (e.type == kbt::KET_PRESSED ? kbt::Key_Shift : 0);
+            pressedKeys[3] = (e.type == kbt::KET_PRESSED ? kbt::Key_Shift : kbt::Key_None);
             break;
         case kbt::Key_Alt:
         case kbt::Key_Alt_Left:
         case kbt::Key_Alt_Right:
-            pressedKeys[4] = (e.type == kbt::KET_PRESSED ? kbt::Key_Alt : 0);
+            pressedKeys[4] = (e.type == kbt::KET_PRESSED ? kbt::Key_Alt : kbt::Key_None);
             break;
         default:
             if (e.type == kbt::KET_RELEASED)
             {
-                pressedKeys[0] = pressedKeys[5] = 0;
+                pressedKeys[0] = pressedKeys[5] = kbt::Key_None;
                 break;
             }
 
-            if (pressedKeys[1] == 0 && pressedKeys[2] == 0 &&
-                pressedKeys[3] == 0 && pressedKeys[4] == 0)
+            if (pressedKeys[1] == kbt::Key_None && pressedKeys[2] == kbt::Key_None &&
+                pressedKeys[3] == kbt::Key_None && pressedKeys[4] == kbt::Key_None)
                 pressedKeys[0] = key;
             else
                 pressedKeys[5] = key;
@@ -471,8 +471,8 @@ static bool keyEventHandler(kbt::KeyEvent e)
 
     // Win+W: trigger close and suppress the system hotkey.
     if (pressedKeys[1] == kbt::Key_Meta && pressedKeys[5] == kbt::Key_W &&
-        pressedKeys[0] == 0             && pressedKeys[2] == 0 &&
-        pressedKeys[3] == 0             && pressedKeys[4] == 0)
+        pressedKeys[0] == kbt::Key_None && pressedKeys[2] == kbt::Key_None &&
+        pressedKeys[3] == kbt::Key_None && pressedKeys[4] == kbt::Key_None)
     {
         printf("[Hotkey triggered]\n");
 
