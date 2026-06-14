@@ -46,6 +46,10 @@ The compiled executable will be at `build/bin/Release/WWClose.exe`.
 | [keyboard_tools](https://github.com/JaderoChan/keyboard_tools) | Cross-platform keyboard hook & key utility library | MIT |
 | [nlohmann/json](https://github.com/nlohmann/json) | JSON parsing (used by easy_translate) | MIT |
 
+## Notice
+
+In order to enable the program to be used normally in high-privileged programs (the Windows security mechanism will prevent hooks of low-privileged processes from accepting keyboard events from high-privileged target programs (processes running with administrator privileges), causing shortcut keys to become invalid), the program will run with administrator privileges by default. If you need to turn off this behavior, you can remove or comment the corresponding declaration in `cmake/templates/app.manifest.in`.
+
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <!-- Request administrator privileges so the low-level keyboard hook receives
+       events from elevated processes (e.g. Task Manager, admin-run apps). -->
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
   <!-- Enable Common Controls v6 for modern visual styles (TaskDialog, etc.). -->
   <dependency>
     <dependentAssembly>

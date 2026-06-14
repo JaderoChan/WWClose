@@ -46,6 +46,10 @@ cmake --build build --config Release
 | [keyboard_tools](https://github.com/JaderoChan/keyboard_tools) | 跨平台键盘钩子与按键工具库 | MIT |
 | [nlohmann/json](https://github.com/nlohmann/json) | JSON 解析（easy_translate 依赖） | MIT |
 
+## 注意
+
+为了使程序能够在高权限程序中正常使用（Windows 安全机制会阻止低权限进程的钩子接受高权限目标程序（使用管理员权限运行的进程）的键盘事件，导致快捷键失效），程序将默认以管理员权限运行。如果你需要关闭此行为，可以在 `cmake/templates/app.manifest.in` 中删除或注释相应的声明。
+
 ## 开源协议
 
 本项目基于 [MIT License](https://opensource.org/licenses/MIT) 开源。
