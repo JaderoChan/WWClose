@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <string>
 
 #include <windows.h>
@@ -311,7 +312,24 @@ static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         {
             HWND target = reinterpret_cast<HWND>(wParam);
             if (target && target != hwnd)
-                PostMessageA(target, WM_SYSCOMMAND, SC_CLOSE, 0);
+            {
+                bool ok = PostMessageA(target, WM_SYSCOMMAND, SC_CLOSE, 0);
+                if (!ok)
+                {
+                    DWORD err = GetLastError();
+                    char* msg = nullptr;
+                    FormatMessageA(
+                        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                        nullptr, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                        reinterpret_cast<LPSTR>(&msg), 0, nullptr);
+                    printf("- Post close message to target window: fail (0x%08lX) %s\n", err, msg ? msg : "");
+                    LocalFree(msg);
+                }
+                else
+                {
+                    printf("- Post close message to target window: success\n");
+                }
+            }
             return 0;
         }
 
@@ -456,7 +474,16 @@ static bool keyEventHandler(kbt::KeyEvent e)
         pressedKeys[0] == 0             && pressedKeys[2] == 0 &&
         pressedKeys[3] == 0             && pressedKeys[4] == 0)
     {
+        printf("[Hotkey triggered]\n");
+
         HWND target = getFocusedWindow();
+
+        static char clsName[256] = {0};
+        memset(clsName, 0, 256);
+        if (target)
+            GetClassNameA(target, clsName, 256);
+        printf("- Get focused window: 0x%p\n- Class name: %s\n", target, clsName);
+
         if (gHwnd)
             PostMessageA(gHwnd, WM_TRIGGERED, reinterpret_cast<WPARAM>(target), 0);
         return false;
